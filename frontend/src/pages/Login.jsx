@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import axios from 'axios';
 
 import useAuth from '../hooks';
-import routes from '../../../routes';
+import routes from '../routes';
 
 const schema = yup.object().shape({
   username: yup.string().required(),
@@ -30,7 +30,6 @@ const Login = () => {
       validationSchema={schema}
       onSubmit={(values) => {
         axios.post(routes.loginPath(), values).then((response) => {
-          console.log(response);
           window.localStorage.setItem('userId', response.data.token);
           logIn();
         });
