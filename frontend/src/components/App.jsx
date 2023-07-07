@@ -1,66 +1,36 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import React, { useMemo, useState, useEffect } from 'react';
-import AuthContext from '../context';
-import useAuth from '../hooks';
-
-import Login from '../pages/Login';
-import NoMatch from '../pages/NoMatch';
-import Chat from '../pages/Chat';
-
-const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
-
-  useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    if (userId) logIn();
-  }, []);
-
-  const memoCallback = useMemo((() => ({ loggedIn, logIn, logOut })), [loggedIn]);
-
-  return (
-    <AuthContext.Provider value={memoCallback}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
-
-const PrivateRoute = ({ children }) => {
-  const auth = useAuth();
-  const location = useLocation();
-
-  return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
-  );
-};
+import AuthProvider from '../context/AuthProvider';
+import Login from './pages/Login';
+import NoMatch from './pages/NoMatch';
+import Chat from './pages/Chat';
+import SignUp from './pages/SignUp';
+import PrivateRoute from './PrivateRoute';
+import Nav from './Nav';
 
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
-      <Routes>
-        <Route
-          path=""
-          element={(
-            <PrivateRoute>
-              <Chat />
-            </PrivateRoute>
-          )}
-        />
-        <Route path="login" element={<Login />} />
-        <Route path="*" element={<NoMatch />} />
-      </Routes>
+      <div className="d-flex flex-column h-100">
+        <Nav />
+        <Routes>
+          <Route
+            path=""
+            element={(
+              <PrivateRoute>
+                <Chat />
+              </PrivateRoute>
+            )}
+          />
+          <Route path="login" element={<Login />} />
+          <Route path="signUp" element={<SignUp />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+        <ToastContainer />
+      </div>
     </BrowserRouter>
   </AuthProvider>
 );
