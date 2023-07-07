@@ -1,5 +1,5 @@
 install:
-	npm ci
+	npm ci --force
 
 start:
 	npm start
