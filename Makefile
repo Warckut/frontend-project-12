@@ -2,7 +2,6 @@ lint-frontend:
 	make -C frontend lint
 
 install:
-	npm install
 	make -C frontend install
 
 start-frontend:
