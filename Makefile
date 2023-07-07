@@ -1,2 +1,3 @@
 install:
-	npm install --prefix frontend
+	npm ci
+	npm ci --prefix frontend
