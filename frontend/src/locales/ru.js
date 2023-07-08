@@ -29,7 +29,7 @@ export default {
       existLogin: 'Такой пользователь уже существует',
       required: 'Обязательное поле',
       nameLength: 'От 3 до 20 символов',
-      passwordLength: 'Минимум 6 символов',
+      passwordLength: 'Не менее 6 символов',
       confirmPsw: 'Пароли должны совпадать',
       unauth: 'Неверные имя пользователя или пароль',
     },
