@@ -67,6 +67,7 @@ const Login = () => {
                   <Form.Control
                     type="text"
                     name="username"
+                    id="username"
                     className="form-control"
                     value={formik.values.username}
                     isInvalid={formik.errors.username || resErr}
@@ -84,6 +85,7 @@ const Login = () => {
                   <Form.Control
                     type="password"
                     name="password"
+                    id="password"
                     className="form-control"
                     value={formik.values.password}
                     isInvalid={formik.errors.password || resErr}

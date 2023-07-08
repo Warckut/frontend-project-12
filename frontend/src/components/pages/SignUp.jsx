@@ -77,6 +77,7 @@ const SignUp = () => {
                   <Form.Control
                     type="text"
                     name="username"
+                    id="username"
                     className="form-control"
                     onBlur={formik.handleBlur}
                     value={formik.values.username}
@@ -96,6 +97,7 @@ const SignUp = () => {
                   <Form.Control
                     type="password"
                     name="password"
+                    id="password"
                     className="form-control"
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
@@ -114,6 +116,7 @@ const SignUp = () => {
                   <Form.Control
                     type="password"
                     name="confirmPassword"
+                    id="confirmPassword"
                     className="form-control"
                     onBlur={formik.handleBlur}
                     value={formik.values.confirmPassword}
