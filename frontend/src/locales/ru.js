@@ -1,6 +1,6 @@
 export default {
   translation: {
-    brand: 'CHAT',
+    brand: 'Hexlet Chat',
     login: 'Войти',
     logout: 'Выйти',
     registration: 'Регистрация',
