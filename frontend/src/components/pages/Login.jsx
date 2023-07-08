@@ -63,7 +63,7 @@ const Login = () => {
               <Form onSubmit={formik.handleSubmit}>
                 <h2 className="text-center">{t('login')}</h2>
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="nameInput">{t('username')}</Form.Label>
+                  <Form.Label htmlFor="username">{t('username')}</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -80,7 +80,7 @@ const Login = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label>{t('password')}</Form.Label>
+                  <Form.Label htmlFor="password">{t('password')}</Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
