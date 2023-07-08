@@ -22,7 +22,7 @@ const RemoveChannel = ({ show, action, handleClose }) => {
         <Button variant="secondary">
           {t('buttons.cancel')}
         </Button>
-        <Button variant="primary" onClick={action}>{t('buttons.remove')}</Button>
+        <Button variant="danger" onClick={action}>{t('buttons.remove')}</Button>
       </Modal.Footer>
     </Modal>
   );
