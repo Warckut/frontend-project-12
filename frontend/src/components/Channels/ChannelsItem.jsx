@@ -65,7 +65,9 @@ const ChannelItem = ({
           </Button>
 
           { removable && (
-            <Dropdown.Toggle split variant={variant} id="dropdown-basic" />
+            <Dropdown.Toggle split variant={variant} id="dropdown-basic">
+              <span className="visually-hidden">Управление каналом</span>
+            </Dropdown.Toggle>
           )}
 
           <Dropdown.Menu>

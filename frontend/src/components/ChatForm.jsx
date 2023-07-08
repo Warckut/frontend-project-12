@@ -13,6 +13,7 @@ const ChatForm = () => {
   const channelId = useSelector((state) => state.channelsInfo.currentChannelId);
   const { user } = useAuth();
   filter.loadDictionary('ru');
+  filter.loadDictionary('en');
 
   const formik = useFormik({
     initialValues: { text: '' },

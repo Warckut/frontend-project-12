@@ -4,14 +4,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import filter from 'leo-profanity';
 
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
 
 const AddChannel = ({ action, show, handleClose }) => {
   const channels = useSelector(channelsSelectors.selectAll);
   const namesChannels = channels.map(({ name }) => name);
-  filter.loadDictionary('ru');
 
   const { t } = useTranslation();
   const formik = useFormik({
@@ -24,7 +22,7 @@ const AddChannel = ({ action, show, handleClose }) => {
         .required(t('validation.required'))
         .notOneOf(namesChannels, t('validation.unicue')),
     }),
-    onSubmit: ({ name }) => action(filter.clean(name)),
+    onSubmit: ({ name }) => action(name),
   });
 
   const handleCloseAndReset = () => {
@@ -41,12 +39,14 @@ const AddChannel = ({ action, show, handleClose }) => {
         <Form.Control
           type="text"
           name="name"
+          id="name"
           value={formik.values.channel}
           isInvalid={formik.errors.name && formik.touched.name}
           className="form-control"
           onChange={formik.handleChange}
           required
         />
+        <Form.Label className="visually-hidden" for="name">Имя канала</Form.Label>
         <Form.Control.Feedback
           type="invalid"
           className="invalid-feedback"

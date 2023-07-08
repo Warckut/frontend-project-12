@@ -4,7 +4,6 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import filter from 'leo-profanity';
 
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
 
@@ -16,7 +15,6 @@ const RenameChannel = ({
   const { t } = useTranslation();
   const channels = useSelector(channelsSelectors.selectAll);
   const namesChannels = channels.map(({ name }) => name);
-  filter.loadDictionary('ru');
 
   const formik = useFormik({
     initialValues: {
@@ -28,7 +26,7 @@ const RenameChannel = ({
         .required(t('validation.required'))
         .notOneOf(namesChannels, t('validation.unicue')),
     }),
-    onSubmit: ({ name }) => action(filter.clean(name)),
+    onSubmit: ({ name }) => action(name),
   });
 
   const handleCloseAndReset = () => {
@@ -45,12 +43,14 @@ const RenameChannel = ({
         <Form.Control
           type="text"
           name="name"
+          id="name"
           value={formik.values.name}
           className="form-control"
           isInvalid={formik.errors.name && formik.touched.name}
           onChange={formik.handleChange}
           required
         />
+        <Form.Label className="visually-hidden" for="name">Имя канала</Form.Label>
         <Form.Control.Feedback
           type="invalid"
           className="invalid-feedback"
