@@ -4,6 +4,7 @@ export default {
     login: 'Войти',
     logout: 'Выйти',
     registration: 'Регистрация',
+    nickname: 'Ваш ник',
     username: 'Имя пользователя',
     password: 'Пароль',
     confirmPsw: 'Подтвердите пароль',
