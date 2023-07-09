@@ -1,20 +1,18 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/Warckut/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Warckut/frontend-project-12/actions)",
+  "description": "[![Actions Status](https://github.com/Warckut/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Warckut/frontend-project-12/actions)   [![Maintainability](https://api.codeclimate.com/v1/badges/30cf79224a084119fedd/maintainability)](https://codeclimate.com/github/Warckut/frontend-project-12/maintainability)",
   "main": "index.js",
-  "scripts": {
-    "start": "PORT=5000 npx start-server -s ./frontend/build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build --prefix frontend",
-    "postinstall": "cd frontend && npm ci"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@hexlet/chat-server": "^1.1.6"
   },
-  "engines": {
-    "node": ">=14 <15"
-  }
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "postinstall": "cd frontend && npm ci",
+    "start": "PORT=5000 npx start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
