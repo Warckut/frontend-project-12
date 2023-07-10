@@ -36,7 +36,7 @@ const Chat = () => {
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="bg-white flex-md-row h-100">
         <ChannelList />
-        <Col className="p-0 d-flex flex-column h-100" md="10">
+        <Col className="p-0 d-flex flex-column h-100">
           <div className="mb-4 bg-light p-3 shadow-sm small w-100">
             <p className="m-0">
               <b>
