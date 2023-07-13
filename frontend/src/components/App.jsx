@@ -28,6 +28,7 @@ const App = () => (
           <Route path="login" element={<Login />} />
           <Route path="signUp" element={<SignUp />} />
           <Route path="*" element={<NoMatch />} />
+          <Route path="*/*" element={<NoMatch />} />
         </Routes>
         <ToastContainer />
       </div>

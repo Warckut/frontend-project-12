@@ -9,9 +9,7 @@ import {
 
 const ChatBox = () => {
   const dispatch = useDispatch();
-  const messages = useSelector(messagesSelectors.selectAll);
-  const currentChannelId = useSelector((s) => s.channelsInfo.currentChannelId);
-  const currMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
+  const currMessages = useSelector(messagesSelectors.currentMessages);
 
   useEffect(() => {
     socket.on('newMessage', (payload) => {

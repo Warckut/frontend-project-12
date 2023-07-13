@@ -10,6 +10,7 @@ import ChatForm from '../ChatForm';
 
 import { selectors as messagesSelectors } from '../../slices/messagesSlice';
 import { fetchUserData, selectors as channelsSelectors } from '../../slices/channelsSlice';
+import ModalComponent from '../modals/ModalComponent';
 
 const Chat = () => {
   const { t } = useTranslation();
@@ -54,6 +55,7 @@ const Chat = () => {
           <ChatForm />
         </Col>
       </Row>
+      <ModalComponent />
     </Container>
   );
 };

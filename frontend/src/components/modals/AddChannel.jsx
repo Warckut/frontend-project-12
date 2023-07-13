@@ -2,16 +2,25 @@ import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import { selectors as channelsSelectors } from '../../slices/channelsSlice';
+import { actions as modalsActions } from '../../slices/modalSlice';
+import {
+  actions as channelsActions,
+  selectors as channelsSelectors,
+} from '../../slices/channelsSlice';
+import { useChat } from '../../hooks';
 
-const AddChannel = ({ action, show, handleClose }) => {
+const AddChannel = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
   const namesChannels = channels.map(({ name }) => name);
 
-  const { t } = useTranslation();
+  const { newChannel } = useChat();
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -22,16 +31,23 @@ const AddChannel = ({ action, show, handleClose }) => {
         .required(t('validation.required'))
         .notOneOf(namesChannels, t('validation.unicue')),
     }),
-    onSubmit: ({ name }) => action(name),
+    onSubmit: ({ name }) => {
+      newChannel(name)
+        .then((id) => {
+          dispatch(channelsActions.setActualChannel(id));
+          toast.success(t('toast.createdChannel'));
+          dispatch(modalsActions.setCurrentModal(null));
+        }).catch(() => toast.error(t('toast.dataLoadingError')));
+    },
   });
 
   const handleCloseAndReset = () => {
     formik.resetForm();
-    handleClose();
+    dispatch(modalsActions.setCurrentModal(null));
   };
 
   return (
-    <Modal centered show={show} onHide={handleCloseAndReset}>
+    <Modal centered show onHide={handleCloseAndReset}>
       <Modal.Header closeButton>
         <Modal.Title>{t('titles.addChannel')}</Modal.Title>
       </Modal.Header>

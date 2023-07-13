@@ -5,15 +5,17 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { BsArrowRightSquare } from 'react-icons/bs';
 import filter from 'leo-profanity';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
-import socket from '../socket';
-import useAuth from '../hooks';
+import { useChat, useAuth } from '../hooks';
+import { selectors as channelsSelectors } from '../slices/channelsSlice';
 
 const ChatForm = () => {
-  const channelId = useSelector((state) => state.channelsInfo.currentChannelId);
+  const { t } = useTranslation();
+  const channelId = useSelector(channelsSelectors.currentChannelId);
   const { user } = useAuth();
-  filter.loadDictionary('ru');
-  filter.loadDictionary('en');
+  const { sendMessage } = useChat();
 
   const formik = useFormik({
     initialValues: { text: '' },
@@ -21,12 +23,12 @@ const ChatForm = () => {
       text: yup.string().required(),
     }),
     onSubmit: ({ text }, helpers) => {
-      socket.emit('newMessage', {
+      sendMessage({
         body: filter.clean(text),
         channelId,
         username: user.username,
-      });
-      helpers.resetForm();
+      }).catch(() => toast.error(t('toast.dataLoadingError')))
+        .finally(() => helpers.resetForm());
     },
   });
 

@@ -1,20 +1,22 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
+import { actions as modalsActions } from '../../slices/modalSlice';
+import { useChat } from '../../hooks';
 
-const RenameChannel = ({
-  show,
-  action,
-  handleClose,
-}) => {
+const RenameChannel = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { renameChannel } = useChat();
   const channels = useSelector(channelsSelectors.selectAll);
   const namesChannels = channels.map(({ name }) => name);
+  const id = useSelector((s) => s.modals.channelId);
 
   const formik = useFormik({
     initialValues: {
@@ -26,16 +28,22 @@ const RenameChannel = ({
         .required(t('validation.required'))
         .notOneOf(namesChannels, t('validation.unicue')),
     }),
-    onSubmit: ({ name }) => action(name),
+    onSubmit: ({ name }) => {
+      renameChannel({ id, name })
+        .then(() => {
+          toast.success(t('toast.renamedChannel'));
+          dispatch(modalsActions.setCurrentModal(null));
+        }).catch(() => toast.error(t('toast.dataLoadingError')));
+    },
   });
 
   const handleCloseAndReset = () => {
     formik.resetForm();
-    handleClose();
+    dispatch(modalsActions.setCurrentModal(null));
   };
 
   return (
-    <Modal centered show={show} onHide={handleCloseAndReset}>
+    <Modal centered show onHide={handleCloseAndReset}>
       <Modal.Header closeButton>
         <Modal.Title>{t('titles.renameChannel')}</Modal.Title>
       </Modal.Header>

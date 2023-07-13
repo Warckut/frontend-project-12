@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap';
 
 import routes from '../../routes';
-import useAuth from '../../hooks';
+import { useAuth } from '../../hooks';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -37,7 +37,6 @@ const Login = () => {
       setResErr(null);
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userData', JSON.stringify(res.data));
         logIn(res.data);
       } catch (err) {
         formik.setSubmitting(false);
