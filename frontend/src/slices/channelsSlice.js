@@ -1,14 +1,20 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
-import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  createEntityAdapter,
+  createAsyncThunk,
+  createSelector,
+} from '@reduxjs/toolkit';
 import routes from '../routes';
+import { getUserData } from '../context/authApi';
 
 const channelsAdapter = createEntityAdapter();
 
 export const fetchUserData = createAsyncThunk(
   'channels/fetchChannels',
   async () => {
-    const { token } = JSON.parse(localStorage.getItem('userData'));
+    const { token } = getUserData();
     const response = await axios.get(routes.usersPath(), {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -16,11 +22,13 @@ export const fetchUserData = createAsyncThunk(
   },
 );
 
+const defaultCurrentChannel = 1;
+
 const channelsSlice = createSlice({
   name: 'channelsInfo',
   initialState: {
     channels: channelsAdapter.getInitialState({}),
-    currentChannelId: 1,
+    currentChannelId: defaultCurrentChannel,
   },
   reducers: {
     setActualChannel(state, { payload }) {
@@ -28,7 +36,6 @@ const channelsSlice = createSlice({
     },
     addChannel(state, { payload }) {
       channelsAdapter.addOne(state.channels, payload);
-      state.currentChannelId = payload.id;
     },
     renameChannel(state, { payload }) {
       channelsAdapter.updateOne(state.channels, {
@@ -38,7 +45,7 @@ const channelsSlice = createSlice({
     },
     removeChannel(state, { payload }) {
       if (state.currentChannelId === payload.id) {
-        state.currentChannelId = 1;
+        state.currentChannelId = defaultCurrentChannel;
       }
       channelsAdapter.removeOne(state.channels, payload.id);
     },
@@ -49,13 +56,16 @@ const channelsSlice = createSlice({
         const { channels, currentChannelId } = action.payload;
         channelsAdapter.setAll(state.channels, channels);
         state.currentChannelId = currentChannelId;
-      })
-      .addCase(fetchUserData.rejected, () => {
-        console.log('error');
       });
   },
 });
 
 export const { actions } = channelsSlice;
-export const selectors = channelsAdapter.getSelectors((state) => state.channelsInfo.channels);
+export const selectors = {
+  ...channelsAdapter.getSelectors((state) => state.channelsInfo.channels),
+  currentChannelId: createSelector(
+    (state) => state.channelsInfo.currentChannelId,
+    (currentChannelId) => currentChannelId,
+  ),
+};
 export default channelsSlice.reducer;
