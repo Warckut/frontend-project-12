@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 
-import authContext from '../context';
+import { AuthContext, ChatContext } from '../context';
 
-const useAuth = () => useContext(authContext);
+const useAuth = () => useContext(AuthContext);
+const useChat = () => useContext(ChatContext);
 
-export default useAuth;
+export { useAuth, useChat };
