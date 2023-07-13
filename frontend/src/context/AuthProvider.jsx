@@ -1,18 +1,20 @@
 import React, { useState, useMemo } from 'react';
-import AuthContext from './index';
+import { AuthContext } from '.';
+import { saveUserData, removeUserData, getUserData } from './authApi';
 
 const AuthProvider = ({ children }) => {
-  const userDataStr = localStorage.getItem('userData');
-  const userData = (userDataStr) ? JSON.parse(userDataStr) : null;
+  const userData = getUserData();
   const [loggedIn, setLoggedIn] = useState(!!userData);
   const [user, setUser] = useState(userData);
 
-  const logIn = ({ username }) => {
+  const logIn = ({ token, username }) => {
+    saveUserData({ token, username });
     setLoggedIn(true);
     setUser({ username });
   };
+
   const logOut = () => {
-    localStorage.removeItem('userData');
+    removeUserData();
     setLoggedIn(false);
     setUser(null);
   };
