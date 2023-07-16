@@ -3,10 +3,11 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../hooks';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, redirectTo }) => {
   const { loggedIn } = useAuth();
   const location = useLocation();
-  if (!loggedIn) return <Navigate to="/login" state={{ from: location }} />;
+
+  if (!loggedIn) return <Navigate to={redirectTo} state={{ from: location }} />;
 
   return children;
 };

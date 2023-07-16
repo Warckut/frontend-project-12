@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import routes from '../routes';
 import AuthProvider from '../context/AuthProvider';
 import Login from './pages/Login';
 import NoMatch from './pages/NoMatch';
@@ -20,13 +21,13 @@ const App = () => (
           <Route
             path=""
             element={(
-              <PrivateRoute>
+              <PrivateRoute redirectTo={routes.loginPagePath()}>
                 <Chat />
               </PrivateRoute>
             )}
           />
-          <Route path="login" element={<Login />} />
-          <Route path="signUp" element={<SignUp />} />
+          <Route path={routes.loginPagePath()} element={<Login />} />
+          <Route path={routes.signUpPagePath()} element={<SignUp />} />
           <Route path="*" element={<NoMatch />} />
           <Route path="*/*" element={<NoMatch />} />
         </Routes>
