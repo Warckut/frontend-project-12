@@ -1,22 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import socket from '../socket';
 import {
-  actions as messagesActions,
   selectors as messagesSelectors,
 } from '../slices/messagesSlice';
 
 const ChatBox = () => {
-  const dispatch = useDispatch();
   const currMessages = useSelector(messagesSelectors.currentMessages);
-
-  useEffect(() => {
-    socket.on('newMessage', (payload) => {
-      dispatch(messagesActions.addMessage(payload));
-    });
-  });
-
   const messagesView = useRef(null);
 
   useEffect(() => {

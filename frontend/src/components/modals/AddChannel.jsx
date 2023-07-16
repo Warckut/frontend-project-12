@@ -13,7 +13,7 @@ import {
 } from '../../slices/channelsSlice';
 import { useChat } from '../../hooks';
 
-const AddChannel = () => {
+const AddChannel = ({ onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
@@ -41,13 +41,8 @@ const AddChannel = () => {
     },
   });
 
-  const handleCloseAndReset = () => {
-    formik.resetForm();
-    dispatch(modalsActions.setCurrentModal(null));
-  };
-
   return (
-    <Modal centered show onHide={handleCloseAndReset}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('titles.addChannel')}</Modal.Title>
       </Modal.Header>
@@ -70,7 +65,7 @@ const AddChannel = () => {
           { formik.errors.name }
         </Form.Control.Feedback>
         <div className="d-flex justify-content-end">
-          <Button className="m-2" variant="secondary" onClick={handleCloseAndReset}>
+          <Button className="m-2" variant="secondary" onClick={onHide}>
             {t('buttons.cancel')}
           </Button>
           <Button className="m-2" type="submit" variant="primary">
@@ -78,7 +73,7 @@ const AddChannel = () => {
           </Button>
         </div>
       </Form>
-    </Modal>
+    </>
   );
 };
 

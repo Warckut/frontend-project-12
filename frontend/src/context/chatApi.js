@@ -1,27 +1,4 @@
-import store, { actions } from '../slices';
 import socket from '../socket';
-
-const {
-  addMessage,
-  addChannel,
-  removeChannel,
-  renameChannel,
-} = actions;
-
-const { dispatch } = store;
-
-socket.on('newMessage', (payload) => {
-  dispatch(addMessage(payload));
-});
-socket.on('newChannel', (payload) => {
-  dispatch(addChannel(payload));
-});
-socket.on('removeChannel', (payload) => {
-  dispatch(removeChannel(payload));
-});
-socket.on('renameChannel', (payload) => {
-  dispatch(renameChannel(payload));
-});
 
 const chatApi = {
   sendMessage: (message) => new Promise((resolve, reject) => {

@@ -10,7 +10,7 @@ import { selectors as channelsSelectors } from '../../slices/channelsSlice';
 import { actions as modalsActions } from '../../slices/modalSlice';
 import { useChat } from '../../hooks';
 
-const RenameChannel = () => {
+const RenameChannel = ({ onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { renameChannel } = useChat();
@@ -37,13 +37,8 @@ const RenameChannel = () => {
     },
   });
 
-  const handleCloseAndReset = () => {
-    formik.resetForm();
-    dispatch(modalsActions.setCurrentModal(null));
-  };
-
   return (
-    <Modal centered show onHide={handleCloseAndReset}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('titles.renameChannel')}</Modal.Title>
       </Modal.Header>
@@ -66,7 +61,7 @@ const RenameChannel = () => {
           { formik.errors.name }
         </Form.Control.Feedback>
         <div className="d-flex justify-content-end">
-          <Button className="m-2" variant="secondary" onClick={handleCloseAndReset}>
+          <Button className="m-2" variant="secondary" onClick={onHide}>
             {t('buttons.cancel')}
           </Button>
           <Button className="m-2" type="submit" variant="primary">
@@ -74,7 +69,7 @@ const RenameChannel = () => {
           </Button>
         </div>
       </Form>
-    </Modal>
+    </>
   );
 };
 

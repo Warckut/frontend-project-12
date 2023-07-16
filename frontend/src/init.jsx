@@ -4,12 +4,22 @@ import { Provider } from 'react-redux';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import filter from 'leo-profanity';
 
+import socket from './socket';
 import App from './components/App';
 import resources from './locales/index';
-import store from './slices/index';
+import store, { actions } from './slices/index';
 import ChatProvider from './context/ChatProvider';
 import AuthProvider from './context/AuthProvider';
 import config from './rollbar/config';
+
+const { dispatch } = store;
+
+const {
+  addMessage,
+  addChannel,
+  removeChannel,
+  renameChannel,
+} = actions;
 
 const init = async () => {
   const i18n = i18next.createInstance();
@@ -23,6 +33,19 @@ const init = async () => {
 
   const ruDict = filter.getDictionary('ru');
   filter.add(ruDict);
+
+  socket.on('newMessage', (payload) => {
+    dispatch(addMessage(payload));
+  });
+  socket.on('newChannel', (payload) => {
+    dispatch(addChannel(payload));
+  });
+  socket.on('removeChannel', (payload) => {
+    dispatch(removeChannel(payload));
+  });
+  socket.on('renameChannel', (payload) => {
+    dispatch(renameChannel(payload));
+  });
 
   return (
     <RollbarProvider config={config}>

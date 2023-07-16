@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useChat } from '../../hooks';
 import { actions as modalsActions } from '../../slices/modalSlice';
 
-const RemoveChannel = () => {
+const RemoveChannel = ({ onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { removeChannel } = useChat();
@@ -22,13 +22,7 @@ const RemoveChannel = () => {
   };
 
   return (
-    <Modal
-      centered
-      show
-      onHide={() => dispatch(modalsActions.setCurrentChannel(null))}
-      backdrop="static"
-      keyboard={false}
-    >
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('titles.removeChannel')}</Modal.Title>
       </Modal.Header>
@@ -36,12 +30,14 @@ const RemoveChannel = () => {
         {t('areYouSure')}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary">
+        <Button variant="secondary" onClick={onHide}>
           {t('buttons.cancel')}
         </Button>
-        <Button variant="danger" onClick={remove}>{t('buttons.remove')}</Button>
+        <Button variant="danger" onClick={remove}>
+          {t('buttons.remove')}
+        </Button>
       </Modal.Footer>
-    </Modal>
+    </>
   );
 };
 
