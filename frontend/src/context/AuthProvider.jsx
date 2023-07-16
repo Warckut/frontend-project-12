@@ -8,8 +8,6 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(userData);
 
   const logIn = ({ token, username }) => {
-    console.log(token);
-    console.log(username);
     saveUserData({ token, username });
     setLoggedIn(true);
     setUser({ username });
