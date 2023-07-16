@@ -1,26 +1,9 @@
 /* eslint-disable no-param-reassign */
-import axios from 'axios';
-import {
-  createSlice,
-  createEntityAdapter,
-  createAsyncThunk,
-  createSelector,
-} from '@reduxjs/toolkit';
-import routes from '../routes';
-import { getUserData } from '../context/authApi';
+import { createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
+
+import fetchUserData from './fetchUserData';
 
 const channelsAdapter = createEntityAdapter();
-
-export const fetchUserData = createAsyncThunk(
-  'channels/fetchChannels',
-  async () => {
-    const { token } = getUserData();
-    const response = await axios.get(routes.usersPath(), {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  },
-);
 
 const defaultCurrentChannel = 1;
 
