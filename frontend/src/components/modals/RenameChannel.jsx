@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -17,16 +17,24 @@ const RenameChannel = ({ onHide }) => {
   const channels = useSelector(channelsSelectors.selectAll);
   const namesChannels = channels.map(({ name }) => name);
   const id = useSelector((s) => s.modals.channelId);
+  const currChannel = useSelector((s) => channelsSelectors.selectById(s, id));
+  const nameInput = useRef(null);
+
+  useEffect(() => {
+    nameInput.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
-      name: '',
+      name: currChannel.name,
     },
     validationSchema: yup.object().shape({
       name: yup
         .string()
         .required(t('validation.required'))
-        .notOneOf(namesChannels, t('validation.unicue')),
+        .notOneOf(namesChannels, t('validation.unicue'))
+        .min(3, t('validation.nameLength'))
+        .max(20, t('validation.nameLength')),
     }),
     onSubmit: ({ name }) => {
       renameChannel({ id, name })
@@ -47,6 +55,7 @@ const RenameChannel = ({ onHide }) => {
           type="text"
           name="name"
           id="name"
+          ref={nameInput}
           value={formik.values.name}
           className="form-control"
           isInvalid={formik.errors.name && formik.touched.name}

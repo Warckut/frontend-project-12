@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -18,8 +18,13 @@ const AddChannel = ({ onHide }) => {
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectAll);
   const namesChannels = channels.map(({ name }) => name);
+  const nameInput = useRef(null);
 
   const { newChannel } = useChat();
+
+  useEffect(() => {
+    nameInput.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +34,9 @@ const AddChannel = ({ onHide }) => {
       name: yup
         .string()
         .required(t('validation.required'))
-        .notOneOf(namesChannels, t('validation.unicue')),
+        .notOneOf(namesChannels, t('validation.unicue'))
+        .min(3, t('validation.nameLength'))
+        .max(20, t('validation.nameLength')),
     }),
     onSubmit: ({ name }) => {
       newChannel(name)
@@ -51,6 +58,7 @@ const AddChannel = ({ onHide }) => {
           type="text"
           name="name"
           id="name"
+          ref={nameInput}
           value={formik.values.channel}
           isInvalid={formik.errors.name && formik.touched.name}
           className="form-control"
